@@ -31,7 +31,9 @@ ___
   - #### Display *departments*:
     The page is accessible by clicking the "Departments" tab in the top of the screen. It displays the list of departments and looks like:
     
-    [!alt-text](https://github.com/nosoccus/department-app/blob/main/documentation/mockups/departments_main.png?raw=true "List of departments")
+    <p align="center">
+    <img src="/documentation/mockups/departments-main.png">
+    </p>
     
     User can perform the following actions:
      - go to the "Employees" page.
@@ -49,7 +51,9 @@ ___
   - #### Add an *department*:
     The page is accessible by clicking the "Add" button in the "Departments" page. It allows to add a new department and looks like:
     
-    [!alt-text](https://github.com/nosoccus/department-app/blob/main/documentation/mockups/add_new_department.png?raw=true "Add new department")
+    <p align="center">
+    <img src="/documentation/mockups/add-new-department.png">
+    </p>
     
     User can perform the following actions:
      - Fill information about new department.
@@ -59,7 +63,9 @@ ___
   - #### Edit the *department*:
     The page is accessible by clicking the "Edit" button opposite needed department. It allows to edit the existing department and looks like:
     
-    [!alt-text](https://github.com/nosoccus/department-app/blob/main/documentation/mockups/edit_department.png?raw=true "Edit existing department")
+    <p align="center">
+    <img src="/documentation/mockups/edit-department.png">
+    </p>
     
     User can perform the following actions:
      - Fill information about new department.
@@ -71,7 +77,9 @@ ___
   - #### Display *employees*:
     The page is accessible by clicking the "Employees" tab in the top of the screen. It displays the list of employees and looks like:
     
-    [!alt-text](https://github.com/nosoccus/department-app/blob/main/documentation/mockups/employees_main.png?raw=true "List of employees")
+    <p align="center">
+    <img src="/documentation/mockups/employees-main.png">
+    </p>
     
     User can perform the following actions:
      - go to the "Departments" page.
@@ -92,7 +100,9 @@ ___
   - #### Add an *employee*:
     The page is accessible by clicking the "Add" button in the "Employees" page. It allows to add a new employee and looks like:
     
-    [!alt-text](https://github.com/nosoccus/department-app/blob/main/documentation/mockups/add_new_employee.png?raw=true "Add new employee")
+    <p align="center">
+    <img src="/documentation/mockups/add-new-employee.png">
+    </p>
     
     User can perform the following actions:
      - Fill information about new employee.
@@ -102,11 +112,13 @@ ___
   - #### Edit the *employee*:
     The page is accessible by clicking the "Edit" button opposite needed employee. It allows to edit the existing employee and looks like:
     
-    [!alt-text](https://github.com/nosoccus/department-app/blob/main/documentation/mockups/edit_employee.png?raw=true "Edit existing employee")
+    <p align="center">
+    <img src="/documentation/mockups/edit-employee.png">
+    </p>
     
     User can perform the following actions:
      - Fill information about new department.
      - Save an information to new department. After this option information will be saved to a new department in DB.
      - Cancel action. After this option
      
-     
+  
