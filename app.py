@@ -27,18 +27,34 @@ class Department(db.Model):
         self.num_employees = num_employees
 
 
+class Employee(db.Model):
+    id_emp = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(30))
+    last_name = db.Column(db.String(30))
+    birth_date = db.Column(db.Date())
+    salary = db.Column(db.Integer())
+    emp_department = db.Column(db.String(30))
+
+    def __init__(self, first_name, last_name, birth_date, salary, emp_department):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.birth_date = birth_date
+        self.salary = salary
+        self.emp_department = emp_department
+
+
 # This is the index route where we are going to
 # query on all our employee data
-@app.route('/')
-def index():
+@app.route('/department')
+def dep_index():
     all_data = Department.query.all()
 
-    return render_template("index.html", departments=all_data)
+    return render_template("departments_index.html", departments=all_data)
 
 
 # this route is for inserting data to database via html forms
-@app.route('/insert', methods=['POST'])
-def insert():
+@app.route('/department/insert', methods=['POST'])
+def dep_insert():
 
     if request.method == 'POST':
 
@@ -51,14 +67,14 @@ def insert():
         db.session.add(my_data)
         db.session.commit()
 
-        flash("Employee Inserted Successfully")
+        flash("Department inserted successfully")
 
-        return redirect(url_for('index'))
+        return redirect(url_for('dep_index'))
 
 
 # This is our update route where we are going to update our employee
-@app.route('/update', methods=['GET', 'POST'])
-def update():
+@app.route('/department/update', methods=['GET', 'POST'])
+def dep_update():
 
     if request.method == 'POST':
         my_data = Department.query.get(request.form.get('id_dep'))
@@ -71,18 +87,76 @@ def update():
         db.session.commit()
         flash("Department updated successfully")
 
-        return redirect(url_for('index'))
+        return redirect(url_for('dep_index'))
 
 
 # This route is for deleting our employee
-@app.route('/delete/<id_dep>/', methods=['GET', 'POST'])
-def delete(id_dep):
+@app.route('/department/delete/<id_dep>/', methods=['GET', 'POST'])
+def dep_delete(id_dep):
     my_data = Department.query.get(id_dep)
     db.session.delete(my_data)
     db.session.commit()
     flash("Department deleted successfully")
 
-    return redirect(url_for('index'))
+    return redirect(url_for('dep_index'))
+
+
+@app.route('/employee')
+def emp_index():
+    all_data = Employee.query.all()
+
+    return render_template("employees_index.html", employees=all_data)
+
+
+# this route is for inserting data to database via html forms
+@app.route('/employee/insert', methods=['POST'])
+def emp_insert():
+
+    if request.method == 'POST':
+
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+        birth_date = request.form['birth_date']
+        salary = request.form['salary']
+        emp_department = request.form['emp_department']
+
+        my_data = Employee(first_name, last_name, birth_date, salary, emp_department)
+        db.session.add(my_data)
+        db.session.commit()
+
+        flash("Employee inserted successfully")
+
+        return redirect(url_for('emp_index'))
+
+
+# This is our update route where we are going to update our employee
+@app.route('/employee/update', methods=['GET', 'POST'])
+def emp_update():
+
+    if request.method == 'POST':
+        my_data = Employee.query.get(request.form.get('id_emp'))
+
+        my_data.first_name = request.form['first_name']
+        my_data.last_name = request.form['last_name']
+        my_data.birth_date = request.form['birth_date']
+        my_data.salary = request.form['salary']
+        my_data.emp_department = request.form['emp_department']
+
+        db.session.commit()
+        flash("Employee updated successfully")
+
+        return redirect(url_for('emp_index'))
+
+
+# This route is for deleting our employee
+@app.route('/employee/delete/<id_emp>/', methods=['GET', 'POST'])
+def emp_delete(id_emp):
+    my_data = Employee.query.get(id_emp)
+    db.session.delete(my_data)
+    db.session.commit()
+    flash("Employee deleted successfully")
+
+    return redirect(url_for('emp_index'))
 
 
 if __name__ == "__main__":

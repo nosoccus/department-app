@@ -10,8 +10,8 @@
     <div class="row">
         <div class="col md-12">
             <div class="jumbotron p-3">
-                <h2>Manage <b>Departments </b>  <button type="button"  class="btn btn-success float-right"
-                data-toggle="modal" data-target="#mymodal">Add New Department</button> </h2>
+                <h2>Manage Departments<button type="button"  class="btn btn-success float-right"
+                data-toggle="modal" data-target="#mymodal">Add new department</button> </h2>
 
 
                 {% with messages = get_flashed_messages() %}
@@ -32,7 +32,6 @@
 
                 <table class="table table-hover table-dark">
                     <tr>
-                        <th>ID</th>
                         <th>Department name</th>
                         <th>Description</th>
                         <th>Average salary</th>
@@ -43,14 +42,13 @@
 
                    {% for row in departments %}
                     <tr>
-                        <td>{{row.id_dep}}</td>
                         <td>{{row.dep_name}}</td>
                         <td>{{row.description}}</td>
                         <td>{{row.avg_salary}}</td>
                         <td>{{row.num_employees}}</td>
                         <td>
-                            <a href="/update/{{row.id_dep}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id_dep}}">Edit</a>
-                            <a href="/delete/{{row.id_dep}}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">Delete</a>
+                            <a href="department/delete/{{row.id_dep}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id_dep}}">Edit</a>
+                            <a href="department/delete/{{row.id_dep}}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">Delete</a>
                         </td>
                     </tr>
 
@@ -61,12 +59,12 @@
 
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">Update Information</h4>
+            <h4 class="modal-title">Update department</h4>
          </div>
 
 
          <div class="modal-body">
-            <form action="{{url_for('update')}}" method="POST">
+            <form action="{{url_for('dep_update')}}" method="POST">
                <div class="form-group">
                   <label>Department name:</label>
                    <input type="hidden"  name="id_dep" value="{{row.id_dep}}">
@@ -81,12 +79,12 @@
 
                <div class="form-group">
                   <label>Average salary:</label>
-                  <input type="text" class="form-control" name="avg_salary" value="{{row.avg_salary}}">
+                  <input type="number" class="form-control" name="avg_salary" value="{{row.avg_salary}}">
                </div>
 
                 <div class="form-group">
                   <label>Num of employees:</label>
-                  <input type="text" class="form-control" name="num_employees" value="{{row.num_employees}}">
+                  <input type="number" class="form-control" name="num_employees" value="{{row.num_employees}}">
                </div>
 
                <div class="form-group">
@@ -111,11 +109,11 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <h4 class="modal-title">Add Department</h4>
+            <h4 class="modal-title">Add department</h4>
          </div>
          <div class="modal-body">
 
-            <form action="{{url_for('insert')}}" method="POST">
+            <form action="{{url_for('dep_insert')}}" method="POST">
                <div class="form-group">
                   <label>Department name:</label>
                   <input type="text" class="form-control" name="dep_name" required="1">
