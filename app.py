@@ -34,13 +34,20 @@ class Employee(db.Model):
     birth_date = db.Column(db.Date())
     salary = db.Column(db.Integer())
     emp_department = db.Column(db.String(30))
+    department_id = db.Column(db.Integer, db.ForeignKey("department.id_dep"))
 
-    def __init__(self, first_name, last_name, birth_date, salary, emp_department):
+    def __init__(self, first_name, last_name, birth_date, salary, emp_department, department_id):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
         self.salary = salary
         self.emp_department = emp_department
+        self.department_id = department_id
+
+    # @classmethod
+    # def birthdate_filter(cls, min_date, max_date):
+    #     return cls.query.filter(
+    #         cls.birth_date.between(min_date, max_date)).all()
 
 
 # This is the index route where we are going to
@@ -119,8 +126,9 @@ def emp_insert():
         birth_date = request.form['birth_date']
         salary = request.form['salary']
         emp_department = request.form['emp_department']
+        department_id = request.form['department_id']
 
-        my_data = Employee(first_name, last_name, birth_date, salary, emp_department)
+        my_data = Employee(first_name, last_name, birth_date, salary, emp_department, department_id)
         db.session.add(my_data)
         db.session.commit()
 
@@ -141,6 +149,7 @@ def emp_update():
         my_data.birth_date = request.form['birth_date']
         my_data.salary = request.form['salary']
         my_data.emp_department = request.form['emp_department']
+        my_data.department_id = request.form['department_id']
 
         db.session.commit()
         flash("Employee updated successfully")
@@ -161,3 +170,10 @@ def emp_delete(id_emp):
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+"""
+TODO: connect employees with departments;
+      calculate avg salary
+      calculate num of employees
+      employees/departments tabs
+"""
