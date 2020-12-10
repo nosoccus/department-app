@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
+
 app = Flask(__name__)
 
 app.secret_key = "Secret Key"
@@ -14,40 +16,40 @@ db = SQLAlchemy(app)
 
 # Creating model table for our CRUD database
 class Department(db.Model):
+    __tablename__ = 'department'
+
     id_dep = db.Column(db.Integer, primary_key=True)
     dep_name = db.Column(db.String(30))
     description = db.Column(db.String(100))
-    avg_salary = db.Column(db.Integer())
-    num_employees = db.Column(db.Integer())
+    employees = db.relationship('Employee', backref='department',
+                                lazy='dynamic')
 
-    def __init__(self, dep_name, description, avg_salary, num_employees):
+    def __init__(self, dep_name, description):
         self.dep_name = dep_name
         self.description = description
-        self.avg_salary = avg_salary
-        self.num_employees = num_employees
 
 
 class Employee(db.Model):
+    __tablename__ = 'employee'
+
     id_emp = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(30))
     last_name = db.Column(db.String(30))
     birth_date = db.Column(db.Date())
     salary = db.Column(db.Integer())
-    emp_department = db.Column(db.String(30))
     department_id = db.Column(db.Integer, db.ForeignKey("department.id_dep"))
 
-    def __init__(self, first_name, last_name, birth_date, salary, emp_department, department_id):
+    def __init__(self, first_name, last_name, birth_date, salary, department_id):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
         self.salary = salary
-        self.emp_department = emp_department
         self.department_id = department_id
 
-    # @classmethod
-    # def birthdate_filter(cls, min_date, max_date):
-    #     return cls.query.filter(
-    #         cls.birth_date.between(min_date, max_date)).all()
+
+@app.route('/')
+def index():
+    return redirect("/department")
 
 
 # This is the index route where we are going to
@@ -62,15 +64,11 @@ def dep_index():
 # this route is for inserting data to database via html forms
 @app.route('/department/insert', methods=['POST'])
 def dep_insert():
-
     if request.method == 'POST':
-
         dep_name = request.form['dep_name']
         description = request.form['description']
-        avg_salary = request.form['avg_salary']
-        num_employees = request.form['num_employees']
 
-        my_data = Department(dep_name, description, avg_salary, num_employees)
+        my_data = Department(dep_name, description)
         db.session.add(my_data)
         db.session.commit()
 
@@ -82,14 +80,11 @@ def dep_insert():
 # This is our update route where we are going to update our employee
 @app.route('/department/update', methods=['GET', 'POST'])
 def dep_update():
-
     if request.method == 'POST':
         my_data = Department.query.get(request.form.get('id_dep'))
 
         my_data.dep_name = request.form['dep_name']
         my_data.description = request.form['description']
-        my_data.avg_salary = request.form['avg_salary']
-        my_data.num_employees = request.form['num_employees']
 
         db.session.commit()
         flash("Department updated successfully")
@@ -118,17 +113,20 @@ def emp_index():
 # this route is for inserting data to database via html forms
 @app.route('/employee/insert', methods=['POST'])
 def emp_insert():
-
     if request.method == 'POST':
-
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         birth_date = request.form['birth_date']
         salary = request.form['salary']
-        emp_department = request.form['emp_department']
-        department_id = request.form['department_id']
+        # department_id = request.form['department_id']
+        my_data = Employee(first_name, last_name, birth_date, salary)
 
-        my_data = Employee(first_name, last_name, birth_date, salary, emp_department, department_id)
+        employee = Employee.query.get(request.form.get('id_emp'))
+        form = QuerySelectField(query_factory=lambda: Department.query.all(),
+                                get_label=lambda x: x.name, get_pk=lambda x: x.id)
+        employee.department = form.department.data
+
+        db.session.add(employee)
         db.session.add(my_data)
         db.session.commit()
 
@@ -140,7 +138,6 @@ def emp_insert():
 # This is our update route where we are going to update our employee
 @app.route('/employee/update', methods=['GET', 'POST'])
 def emp_update():
-
     if request.method == 'POST':
         my_data = Employee.query.get(request.form.get('id_emp'))
 
@@ -148,7 +145,6 @@ def emp_update():
         my_data.last_name = request.form['last_name']
         my_data.birth_date = request.form['birth_date']
         my_data.salary = request.form['salary']
-        my_data.emp_department = request.form['emp_department']
         my_data.department_id = request.form['department_id']
 
         db.session.commit()
