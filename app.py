@@ -118,15 +118,9 @@ def emp_insert():
         last_name = request.form['last_name']
         birth_date = request.form['birth_date']
         salary = request.form['salary']
-        # department_id = request.form['department_id']
-        my_data = Employee(first_name, last_name, birth_date, salary)
+        department_id = request.form['department_id']
+        my_data = Employee(first_name, last_name, birth_date, salary, department_id)
 
-        employee = Employee.query.get(request.form.get('id_emp'))
-        form = QuerySelectField(query_factory=lambda: Department.query.all(),
-                                get_label=lambda x: x.name, get_pk=lambda x: x.id)
-        employee.department = form.department.data
-
-        db.session.add(employee)
         db.session.add(my_data)
         db.session.commit()
 

@@ -55,11 +55,6 @@
                         <td>{{row.dep_name}}</td>
                         <td>{{row.description}}</td>
                         <td>
-                            {% if row.employees %}
-                            {{ row.salary.average() }}
-                            {% else %}
-                            0
-                            {% endif %}
                         </td>
                         <td>
                             {% if row.employees %}
@@ -69,7 +64,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="department/delete/{{row.id_dep}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id_dep}}">Edit</a>
+                            <a href="department/update/{{row.id_dep}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.id_dep}}">Edit</a>
                             <a href="department/delete/{{row.id_dep}}" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure?')">Delete</a>
                         </td>
                     </tr>
