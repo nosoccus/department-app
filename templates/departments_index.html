@@ -81,7 +81,7 @@
 
 
          <div class="modal-body">
-            <form action="{{url_for('dep_update')}}" method="POST">
+            <form action="{{url_for('department.dep_update')}}" method="POST">
                <div class="form-group">
                   <label>Department name:</label>
                    <input type="hidden"  name="id_dep" value="{{row.id_dep}}">
@@ -119,7 +119,7 @@
          </div>
          <div class="modal-body">
 
-            <form action="{{url_for('dep_insert')}}" method="POST">
+            <form action="{{url_for('department.dep_insert')}}" method="POST">
                <div class="form-group">
                   <label>Department name:</label>
                   <input type="text" class="form-control" name="dep_name" required="1">
