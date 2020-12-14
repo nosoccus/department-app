@@ -1,21 +1,28 @@
 try:
-    from app import app
+    from app import create_app, db, app
+    from flask import Flask
+    from config import Config
+    from sqlalchemy import create_engine
     import unittest
 except Exception as e:
     print("Some modules are missing {}".format(e))
 
 
 class MyTestCase(unittest.TestCase):
-    # initialization logic for the test suite declared in the test module
-    # code that is executed before all tests in one test run
-    @classmethod
-    def setUpClass(cls):
-        pass
+    def setUp(self):
 
-    # clean up logic for the test suite declared in the test module
-    # code that is executed after all tests in one test run
-    @classmethod
-    def tearDownClass(cls):
+        app = create_app()
+        self.app = app.test_client()
+        app.config['TESTING'] = True
+
+        engine = create_engine('sqlite://')
+        app.config['SQLALCHEMY_DATABASE_URI'] = engine.url
+
+        db.init_app(app)
+        with app.app_context():
+            db.create_all()
+
+    def tearDown(self):
         pass
 
     def test_home(self):
@@ -26,12 +33,12 @@ class MyTestCase(unittest.TestCase):
     def test_department(self):
         tester = app.test_client(self)
         response = tester.get('/department')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status, "200 OK")
 
     def test_employee(self):
         tester = app.test_client(self)
         response = tester.get('/employee')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status, "200 OK")
 
 
 if __name__ == '__main__':
